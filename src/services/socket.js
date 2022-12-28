@@ -1,6 +1,7 @@
 import ACTIONS from "./config/actions";
 import roomService from "./room";
 import userService, { getOnlineUser } from "./user";
+import chatService from './chat';
 import groupService from "./group";
 import User from "../modules/User/model";
 import Chat from "../modules/Chat/model";
@@ -105,7 +106,16 @@ export const socketService = (io) => {
 
     socket.on(ACTIONS.SEND_MSG_EXTENSION, async (msg) => {
       try {
-        if(msg.groupType == 2) {
+        if( msg.groupType == ACTIONS.GLOBAL_CHAT ) {
+          const sender = userService.userModel.find(s => s.user.name == socket.username);
+          msg.sender = sender.user;
+          msg.msgId = "GlobalChatId";
+          msg.date = Date.now;
+          chatService.addMessage(msg);
+          io.sockets.emit(ACTIONS.SEND_MSG_EXTENSION, msg);
+        } else if (msg.groupType == ACTIONS.GROUP_CHAT) {
+          // Group chat content
+        } else if (msg.groupType == ACTIONS.DM_CHAT) { 
           // Send msgs. Members contain you.
           var groupType = false;
           var msgId = "";
@@ -172,8 +182,6 @@ export const socketService = (io) => {
               member.socket.emit(ACTIONS.SEND_MSG_EXTENSION, msg);
             }
           })
-        } else {
-          // Group chat content
         }
       } catch (error) {
         console.log("SEND_MSG_EXTENSION :", error);
