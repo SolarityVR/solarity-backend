@@ -95,29 +95,38 @@ export const socketService = (io) => {
       }
     })
 
-    socket.on(ACTIONS.TYPING_STATE, ({members, name, state}) => {
-      members.forEach((memberId, index) => {
-        const member = userService.userModel.find(s => s.user.userId == memberId);
-        if(!!member && index != 0) {
-          member.socket.emit(ACTIONS.TYPING_STATE, {members, state, name})
-        }
-      })
+    socket.on(ACTIONS.TYPING_STATE, ({members, name, state, chatKind}) => {
+      if(chatKind == ACTIONS.GLOBAL_CHAT) {
+        socket.broadcast.emit(ACTIONS.TYPING_STATE, {members, state, name, chatKind});
+      } else if (chatKind == ACTIONS.GROUP_CHAT) {
+        //
+      } else {
+        // if DM chat
+        members.forEach((memberId, index) => {
+          const member = userService.userModel.find(s => s.user.userId == memberId);
+          if(!!member && index != 0) {
+            member.socket.emit(ACTIONS.TYPING_STATE, {members, state, name, chatKind})
+          }
+        })
+      }
     })
 
     socket.on(ACTIONS.SEND_MSG_EXTENSION, async (msg) => {
       try {
         if( msg.groupType == ACTIONS.GLOBAL_CHAT ) {
           const sender = userService.userModel.find(s => s.user.name == socket.username);
+
           msg.sender = sender.user;
           msg.msgId = "GlobalChatId";
-          msg.date = Date.now;
+          let today  = new Date();
+          msg.date = today.toLocaleString();
+        
           chatService.addMessage(msg);
           io.sockets.emit(ACTIONS.SEND_MSG_EXTENSION, msg);
         } else if (msg.groupType == ACTIONS.GROUP_CHAT) {
           // Group chat content
         } else if (msg.groupType == ACTIONS.DM_CHAT) { 
           // Send msgs. Members contain you.
-          var groupType = false;
           var msgId = "";
           var date = "";
           const sender = userService.userModel.find(s => s.user.userId == msg.members[0]);
@@ -129,7 +138,7 @@ export const socketService = (io) => {
             if(index != 0) {
               var oldOne = undefined;
               try {
-                oldOne = await Chat.findOne({users: {$all: msg.members, $size: msg.members.length}, type: groupType, blockState: false});
+                oldOne = await Chat.findOne({users: {$all: msg.members, $size: msg.members.length}, type: msg.groupType, blockState: false});
               } catch (error) {
                 console.log('ChatFind', error);
               }
@@ -138,7 +147,7 @@ export const socketService = (io) => {
                 try {
                   tmpOne = await Chat.create({
                     users: msg.members,
-                    type: groupType,
+                    type: msg.groupType,
                     msgs: [
                       {
                         sender: msg.members[0],

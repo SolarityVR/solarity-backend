@@ -1,15 +1,19 @@
+const globalChatModel = [];
 class ChatService {
-  globalChatModel = [];
 
   async create(messages) {
-    this.globalChatModel = messages;
+    globalChatModel = messages;
   }
 
   async addMessage(message) {
     if(globalChatModel.length == 1000) {
-      this.globalChatModel.shift();
+      globalChatModel.shift();
     }
-    this.globalChatModel.push(message);
+    globalChatModel.push(message);
+  }
+
+  async getMessages() {
+    return globalChatModel;
   }
 }
 

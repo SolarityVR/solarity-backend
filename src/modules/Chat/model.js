@@ -9,7 +9,7 @@ const chatSchema = new Schema(
         ref: "User",
       },
     ],
-    type: { type: Boolean, required: true },  //false: Normal, true: Group
+    type: { type: Number, required: true },  // 0: Global, 1: Group, 2: DM
     msgs: [
       {
         type: new mongoose.Schema(
