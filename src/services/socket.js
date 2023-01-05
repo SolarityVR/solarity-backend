@@ -95,6 +95,12 @@ export const socketService = (io) => {
       }
     })
 
+    socket.on(ACTIONS.CHANGE_READ_STATE, ({msgId}) => {
+      console.log(msgId);
+      Chat.updateOne({'msgs._id': msgId}, {$set: {["msgs.$.readState"]: false}})
+        .catch(err => console.log('jk', err.message));
+    })
+
     socket.on(ACTIONS.TYPING_STATE, ({members, name, state, chatKind}) => {
       if(chatKind == ACTIONS.GLOBAL_CHAT) {
         socket.broadcast.emit(ACTIONS.TYPING_STATE, {members, state, name, chatKind});
@@ -283,6 +289,7 @@ export const socketService = (io) => {
           io.in(curRoom).emit("occupantsChanged", { occupants });
           console.log(`${socket.id} joined in room ${roomId}`);
         }
+
       } catch (err) {
         console.log(err);
       }
@@ -465,6 +472,7 @@ export const socketService = (io) => {
           delete userlist[user.name];
           delete socketUserMapping[socket.id];
         }
+        userService.leaveUser(user.name);
       } catch (err) {
         console.log("leave", err);
       }
