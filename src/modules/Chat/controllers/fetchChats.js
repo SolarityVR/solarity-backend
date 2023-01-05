@@ -13,8 +13,8 @@ export const fetchChatsController = async (req, res) => {
     for(var j = 0; j < chats.length; j ++) {
       var chat = chats[j];
       var unreadCount = 0;
-      for(var i = 0; i < chat.msgs.length; i ++) {
-        if(chat.msgs[chat.msgs.length - 1 - i].readState == false) {
+      for(var i = chat.msgs.length - 1; i >= 0; i --) {
+        if(chat.msgs[i].readState == false && chat.msgs[i].sender != userId) {
           unreadCount ++;
         } else {
           break;

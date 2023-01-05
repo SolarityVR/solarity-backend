@@ -1,4 +1,5 @@
 const ACTIONS = {
+    CHANGE_READ_STATE: 'change-read-state',
     GLOBAL_CHAT: 0,
     GROUP_CHAT: 1,
     DM_CHAT: 2,

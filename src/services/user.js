@@ -60,6 +60,13 @@ class UserService {
         }
         return false;
     }
+
+    leaveUser(name) {
+        const userIndex = this.userModel.findIndex(s => s.user.name == name);
+        if(userIndex != -1) {
+            this.userModel.splice(userIndex, 1);
+        }
+    }
 }
 
 module.exports = new UserService();
