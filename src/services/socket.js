@@ -135,6 +135,9 @@ export const socketService = (io) => {
           var msgId = "";
           var date = "";
           const sender = userService.userModel.find(s => s.user.userId == msg.members[0]);
+          if(!sender) {
+            return;
+          }
           msg.sender = sender.user;
           for( var index = 0; index < msg.members.length; index ++) {
             var memberUserId = msg.members[index];
