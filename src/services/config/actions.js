@@ -3,6 +3,7 @@ const ACTIONS = {
     GLOBAL_CHAT: 0,
     GROUP_CHAT: 1,
     DM_CHAT: 2,
+    YGG_CHAT: 3,
     TYPING_STATE: 'typing-state',
     INVITE_TO_FRIEND: 'invite-to-friend',
     CHANGE_SLIDE: 'CHANGE_SLIDE',

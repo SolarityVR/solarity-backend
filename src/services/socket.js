@@ -103,6 +103,8 @@ export const socketService = (io) => {
     socket.on(ACTIONS.TYPING_STATE, ({members, name, state, chatKind}) => {
       if(chatKind == ACTIONS.GLOBAL_CHAT) {
         socket.broadcast.emit(ACTIONS.TYPING_STATE, {members, state, name, chatKind});
+      } else if(chatKind == ACTIONS.YGG_CHAT) {
+        socket.broadcast.emit(ACTIONS.TYPING_STATE, {members, state, name, chatKind});
       } else if (chatKind == ACTIONS.GROUP_CHAT) {
         //
       } else {
@@ -127,6 +129,15 @@ export const socketService = (io) => {
           msg.date = today.toLocaleString();
         
           chatService.addMessage(msg);
+          io.sockets.emit(ACTIONS.SEND_MSG_EXTENSION, msg);
+        } else if( msg.groupType == ACTIONS.YGG_CHAT ) {
+          const sender = userService.userModel.find(s => s.user.name == socket.username);
+
+          msg.sender = sender.user;
+          msg.msgId = "YGGChatId";
+          let today  = new Date();
+          msg.date = today.toLocaleString();
+          chatService.addYGGMessage(msg);
           io.sockets.emit(ACTIONS.SEND_MSG_EXTENSION, msg);
         } else if (msg.groupType == ACTIONS.GROUP_CHAT) {
           // Group chat content

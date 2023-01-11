@@ -13,6 +13,8 @@ export const fetchMessagesController = async (req, res) => {
     var chat = [];
     if(chatKind == ACTIONS.GLOBAL_CHAT) {
       chat = await chatService.getMessages();
+    } else if(chatKind == ACTIONS.YGG_CHAT) {
+      chat = await chatService.getYGGMessages();
     } else if (chatKind == ACTIONS.GROUP_CHAT) {
 
     } else if (chatKind == ACTIONS.DM_CHAT) {

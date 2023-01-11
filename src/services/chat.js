@@ -1,4 +1,5 @@
 const globalChatModel = [];
+const YGGChatModel = [];
 class ChatService {
 
   async create(messages) {
@@ -12,8 +13,19 @@ class ChatService {
     globalChatModel.push(message);
   }
 
+  async addYGGMessage(message) {
+    if(YGGChatModel.length == 1000) {
+      YGGChatModel.shift();
+    }
+    YGGChatModel.push(message);
+  }
+
   async getMessages() {
     return globalChatModel;
+  }
+
+  async getYGGMessages() {
+    return YGGChatModel;
   }
 }
 
