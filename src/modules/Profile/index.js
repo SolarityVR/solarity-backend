@@ -189,7 +189,7 @@ class ProfileModule extends RouteModule {
       this.validateSchema(checkRoomSchema),
       checkRoomController
     );
-
+    
     // Set Active Room
     this.router.post(
       "/setActiveRoom",

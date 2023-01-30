@@ -5,6 +5,7 @@ import chatService from './chat';
 import groupService from "./group";
 import User from "../modules/User/model";
 import Chat from "../modules/Chat/model";
+import chat from "./chat";
 export const socketService = (io) => {
   const socketUserMapping = {};
   var roomIndex = 3;
