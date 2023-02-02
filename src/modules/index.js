@@ -7,3 +7,4 @@ export * from "./Tweet";
 export * from "./Collection";
 export * from "./Event";
 export * from "./Chat";
+export * from "./Game";

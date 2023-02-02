@@ -19,7 +19,8 @@ import {
   userModule,
   chatModule,
   collectionModule,
-  eventModule
+  eventModule,
+  gameModule
 } from "./modules";
 import { authenticate } from "./middlewares";
 import Mailer from "./mailer";
@@ -121,6 +122,7 @@ class Server {
     this.express.use("/api/test", testModule);
     this.express.use("/api/auth", authModule);
     this.express.use("/api/daos", daoModule);
+    this.express.use("/api/games", gameModule);
   }
   initPrivateRoutes() {
     // put here the private routes
