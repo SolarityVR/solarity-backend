@@ -1,8 +1,10 @@
 import { RouteModule } from "../RouteModuleClass";
 import {
   getGamesController,
+  getGameController,
 } from "./controllers";
-import {
+import { 
+  fetchGameSchema
 } from "./schema";
 
 class GameModule extends RouteModule {
@@ -10,6 +12,12 @@ class GameModule extends RouteModule {
     this.router.get(
       "/",
       getGamesController
+    );
+
+    this.router.post(
+      "/game",
+      this.validateSchema(fetchGameSchema),
+      getGameController,
     );
   }
 

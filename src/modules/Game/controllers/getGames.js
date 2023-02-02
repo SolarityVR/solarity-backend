@@ -4,9 +4,9 @@ import GameModel from "../model";
 export const getGamesController = async (req, res) => {
   try {
 
-    const data = await GameModel.find();
+    const games = await GameModel.find();
 
-    return successResponse({ res, response: { data } });
+    return successResponse({ res, response: { games } });
   } catch (err) {
     return errorResponse({ res, err });
   }
