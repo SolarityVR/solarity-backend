@@ -65,6 +65,15 @@ const userSchema = new Schema(
       tokenId: { type: String, required: false, trim: true },
       mintAddress: { type: String, required: false, trim: true },
     },
+    score: { type: Number, required: true, default: 0 },
+    withdraws: [
+      {
+        amount: { type: Number, required: true, default: 0 }
+      },
+      {
+        timestamps: true,
+      }
+    ],
     friends: [
       {
         friend: { 

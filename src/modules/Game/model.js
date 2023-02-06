@@ -70,6 +70,21 @@ const gameSchema = new Schema(
         type: String,
       }
     ],
+    quests: [
+      {
+        name: { type: String, required: true, default: "" },
+        detail: { type: String, required: true, default: "" },
+        score: { type: Number, required: true, default: 0 },
+        achievers: [
+          {
+            user: {
+              type: Schema.Types.ObjectId,
+              ref: "User",
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     autoIndex: true,
