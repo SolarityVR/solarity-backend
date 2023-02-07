@@ -1,5 +1,6 @@
 import { RouteModule } from "../RouteModuleClass";
 import {
+  setGameStateController,
   getProfileController,
   updateProfileInfoController,
   updatePublicAddressController,
@@ -25,6 +26,7 @@ import {
   updatePublicAddressSchema,
   updateProfileSchema,
   profilePicSchema,
+  gameStateSchema,
   selectNftsForRoomSchema,
   linkAccountSchema,
   unlinkAccountSchema,
@@ -92,6 +94,13 @@ class ProfileModule extends RouteModule {
       "/userInfo",
       this.validateSchema(updateUserInfoSchema),
       updateUserInfoController
+    );
+
+    // Set profile game state
+    this.router.post(
+      "/setGameState",
+      this.validateSchema(gameStateSchema),
+      setGameStateController
     );
 
     // update profile pic using the nft

@@ -366,6 +366,16 @@ export const undoSetupSchema = yup.object({
   }),
 });
 
+export const gameStateSchema = yup.object({
+  body: yup.object({
+    gameId: yup
+      .string()
+      .required("game id is required"),
+    type: yup
+      .boolean()
+  }),
+});
+
 export const profileImageUpdateSchema = yup.object({
   body: yup.object({
     imageNetwork: yup

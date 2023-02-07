@@ -68,10 +68,23 @@ const userSchema = new Schema(
     score: { type: Number, required: true, default: 0 },
     withdraws: [
       {
-        amount: { type: Number, required: true, default: 0 }
-      },
+        amount: { type: Number, required: true, default: 0 },
+        date: { type: Date, default: Date.now}
+      }
+    ],
+    games: [
       {
-        timestamps: true,
+        game: {
+          type: Schema.Types.ObjectId,
+          ref: "Game",
+        },
+        hours: { type: Number, default: 0 },
+        history: [
+          {
+            type: { type: Boolean, default: false },     // It's a type for entering and leaving of game. false: Enter, true: Leave.
+            date: { type: Date, default: Date.now}
+          }
+        ]
       }
     ],
     friends: [
