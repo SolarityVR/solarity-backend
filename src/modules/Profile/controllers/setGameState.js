@@ -19,6 +19,9 @@ export const setGameStateController = async (req, res) => {
     const gameIndex = games.findIndex(s => s.game == gameId);
 
     if(gameIndex == -1) {
+      if(type == true) {
+        return errorResponse({ res, err: "Something went wrong." });
+      }
       games.push({
         game: gameId,
         history: [
