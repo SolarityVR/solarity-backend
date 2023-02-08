@@ -12,6 +12,7 @@ export const setGameStateController = async (req, res) => {
     const { quests } = await GameModel.findById(gameId);
     var games = profile.games;
     var score = profile.score;
+    var missionFlag = 0;
     if(!games) {
       return errorResponse({ res, err: "Something went wrong." });
     }
@@ -30,6 +31,7 @@ export const setGameStateController = async (req, res) => {
           }
         ]
       });
+      missionFlag = 1;
       score += quests[0].score;
       quests[0].achievers.push({
         user: profile._id
@@ -49,6 +51,7 @@ export const setGameStateController = async (req, res) => {
           quests[1].achievers.push({
             user: profile._id
           });
+          missionFlag = 2;
         }
       }
     }
@@ -68,7 +71,7 @@ export const setGameStateController = async (req, res) => {
       }
     );
     let userData = await req.profile();
-    return successResponse({ res, response: { profile: userData } });
+    return successResponse({ res, response: { newProfile: userData, state: missionFlag } });
   } catch (err) {
     return errorResponse({ res, err });
   }
