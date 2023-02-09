@@ -45,7 +45,7 @@ export const setGameStateController = async (req, res) => {
         const endedDate = new Date();
         var hours = (Math.abs(endedDate.getTime() - createdDate.getTime()) / 3600000);
         games[gameIndex].hours += hours; 
-        userIndex = quests[1].achievers.findIndex(s => s.user == profile._id);
+        const userIndex = quests[1].achievers.findIndex(s => s.user == profile._id);
         if(userIndex == -1 && games[gameIndex].hours > 10) {
           score += quests[1].score;
           quests[1].achievers.push({
