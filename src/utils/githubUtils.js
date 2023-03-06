@@ -1,22 +1,24 @@
 import axios from "axios";
 import UserModel from "../modules/User/model";
 import base64 from "base-64";
-import fetch from "node-fetch";
 
 export const getGithubAccessToken = async (userId, code, redirect_uri) => {
   const params = {
     client_id: process.env.GITHUB_CLIENT_ID,
     client_secret: process.env.GITHUB_CLIENT_SECRET,
-    // grant_type: "authorization_code",
     code,
-    scope: "repo user",
+    scope: "read:user",
     redirect_uri,
   };
   const config = { headers: { Accept: "application/vnd.github+json" } };
   const paramsString = new URLSearchParams(params);
-  
-  const response = await axios.post("https://github.com/login/oauth/access_token", paramsString, config);
-  
+
+  const response = await axios.post(
+    "https://github.com/login/oauth/access_token",
+    paramsString,
+    config
+  );
+
   const { access_token: accessToken } = response.data;
 
   await UserModel.updateOne(
@@ -51,8 +53,8 @@ export const revokeGithub = async (accessToken) => {
   };
   // const params = new URLSearchParams(data);
   let headers = {
-    "Accept": "application/vnd.github+json",
-    "Authorization": `Bearer ${accessToken}`
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${accessToken}`,
     // "Authorization": githubAuthorizationToken
   };
   const { data: response } = await axios.delete(
@@ -62,7 +64,7 @@ export const revokeGithub = async (accessToken) => {
       headers,
     }
   );
-  console.log('response: ', response.data)
+  console.log("response: ", response.data);
   return response;
 };
 

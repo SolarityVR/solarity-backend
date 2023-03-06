@@ -7,7 +7,7 @@ import {
   throwError,
   verifySignature,
   getGithubAccessToken,
-  getGithubUser
+  getGithubUser,
 } from "../../../utils";
 import UserModel from "../../User/model";
 import { TwitterApi } from "twitter-api-v2";
@@ -36,9 +36,13 @@ export const linkAccountController = async (req, res) => {
     }
     // profile = await req.profile();
     profile = await UserModel.findOne({ _id: _id });
-    console.log("profile", profile);
-    return successResponse({ res, response: { type: link, link: profile.externalLinks[link] } });
+    return successResponse({
+      res,
+      response: { type: link, link: profile.externalLinks[link] },
+    });
   } catch (err) {
+    // console.log("--------------------");
+    console.log(err.request._header);
     // return errorResponse({ res, err });
     return res.status(500).json(err);
   }
@@ -47,6 +51,7 @@ export const linkAccountController = async (req, res) => {
 // link discord
 const linkDiscord = async (userId, code, url) => {
   const accessToken = await getDiscordAccessToken(userId, code, url);
+  console.log(userId, code, url);
   const user = await getDiscordUser(accessToken);
   await UserModel.updateOne(
     { _id: userId },
