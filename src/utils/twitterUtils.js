@@ -17,6 +17,12 @@ export const getTwitterAccessToken = async (userId, code, redirect_uri) => {
     code_verifier: "challenge",
     redirect_uri,
   };
+
+  console.log({
+    username: process.env.TWITTER_CLIENT_ID,
+    password: process.env.TWITTER_CLIENT_SECRET,
+  });
+
   const paramString = new URLSearchParams(params);
   let headers = {
     "Content-Type": "application/x-www-form-urlencoded",
