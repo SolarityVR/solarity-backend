@@ -42,7 +42,7 @@ export const linkAccountController = async (req, res) => {
     });
   } catch (err) {
     // console.log("--------------------");
-    console.log(err.request._header);
+    console.log(err);
     // return errorResponse({ res, err });
     return res.status(500).json(err);
   }
