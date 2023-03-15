@@ -108,3 +108,13 @@ export const refreshDiscordToken = async (refreshToken, userId) => {
   );
   return response;
 };
+
+export const checkIfFollowingDiscordAccount = async (userHandle) => {
+  try {
+    console.log("here I am");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+checkIfFollowingDiscordAccount();

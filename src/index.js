@@ -10,7 +10,6 @@ import { TwitterApi } from "twitter-api-v2";
 import Rollbar from "rollbar";
 import cors from "cors";
 
-
 import {
   authModule,
   nftModule,
@@ -20,7 +19,7 @@ import {
   chatModule,
   collectionModule,
   eventModule,
-  gameModule
+  gameModule,
 } from "./modules";
 import { authenticate } from "./middlewares";
 import Mailer from "./mailer";
@@ -33,6 +32,7 @@ import { getProfileData } from "./modules/Profile/helpers";
 import { socketService } from "./services/socket";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import CronManager from "./cronManager";
+import { getTwitterApi } from "./helpers";
 
 class Server {
   constructor({ port }) {
@@ -73,10 +73,13 @@ class Server {
     // await this.initMailer(); <== we will enable later
   }
   async connectDatabase() {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      autoIndex: true,
-    }).then(() => console.log('connected to DB')).catch((err) => console.log("ERROR: ", err));
+    await mongoose
+      .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        autoIndex: true,
+      })
+      .then(() => console.log("connected to DB"))
+      .catch((err) => console.log("ERROR: ", err));
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error:"));
     db.once("open", () => {
@@ -205,8 +208,8 @@ class Server {
   }
   initApis() {
     // twitter api init
-    const twitterClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN);
-    const twitterApi = twitterClient.readOnly;
+    const twitterApi = getTwitterApi();
+
     // twitterApi.v2.userTimeline()
     this.express.set("twitterApi", twitterApi);
     // rollbar api

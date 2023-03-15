@@ -2,27 +2,28 @@ import { RouteModule } from "../RouteModuleClass";
 import {
   getGamesController,
   getGameController,
+  getGameTweetsController,
 } from "./controllers";
-import { 
-  fetchGameSchema
-} from "./schema";
+import { fetchGameSchema, gameIdSchema } from "./schema";
 
 class GameModule extends RouteModule {
   publicRoutes() {
-    this.router.get(
-      "/",
-      getGamesController
-    );
+    this.router.get("/", getGamesController);
 
     this.router.post(
       "/game",
       this.validateSchema(fetchGameSchema),
-      getGameController,
+      getGameController
+    );
+
+    this.router.get(
+      "/:gameId/tweets",
+      this.validateSchema(gameIdSchema),
+      getGameTweetsController
     );
   }
 
-  privateRoutes() {
-  }
+  privateRoutes() {}
 }
 
 export const gameModule = new GameModule();

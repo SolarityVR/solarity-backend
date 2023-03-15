@@ -4,7 +4,6 @@ import { getDaoMemberships } from "../../modules/DAO/helpers";
 
 const setDaoMemberships = async () => {
   try {
-    console.log("STEP 1");
     const users = await UserModel.find(
       { solanaAddress: { $ne: null } },
       { _id: 1, solanaAddress: 1 }

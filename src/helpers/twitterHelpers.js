@@ -1,5 +1,6 @@
 import axios from "axios";
 import base64 from "base-64";
+import { TwitterApi } from "twitter-api-v2";
 import UserModel from "../modules/User/model";
 
 export const twitterAuthorizationToken = (() => {
@@ -7,6 +8,12 @@ export const twitterAuthorizationToken = (() => {
   const encodedToken = base64.encode(token);
   return "Basic " + encodedToken;
 })();
+
+export const getTwitterApi = () => {
+  const twitterClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN);
+  const twitterApi = twitterClient.readOnly;
+  return twitterApi;
+};
 
 export const getTwitterAccessToken = async (userId, code, redirect_uri) => {
   let params = {
@@ -38,4 +45,24 @@ export const getTwitterAccessToken = async (userId, code, redirect_uri) => {
     }
   );
   return data.access_token;
+};
+
+export const checkIfFollowingTwitterAccount = async (
+  userHandle,
+  accountHandle
+) => {
+  const twitterApi = getTwitterApi();
+  try {
+    const {
+      relationship: {
+        source: { following },
+      },
+    } = await twitterApi.v1.friendship({
+      source_screen_name: userHandle,
+      target_screen_name: accountHandle,
+    });
+    return following;
+  } catch (err) {
+    return false;
+  }
 };
