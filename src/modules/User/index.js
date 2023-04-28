@@ -9,6 +9,7 @@ import {
   getLinkInfoController,
   getRoomIdsController,
   getUsersController,
+  getLeaderboardController,
   followUserController,
   unfollowUserController,
   getFollowingStatusController,

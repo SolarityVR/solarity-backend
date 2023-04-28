@@ -2,12 +2,15 @@
 import { RouteModule } from "../RouteModuleClass";
 // import { getUserSchema, getUsersSchema, getEventsSchema } from "./schema";
 
-import {
-  // getAllUsersController,
-} from "./controllers";
+import { getLeaderboardController } from "./controllers";
 
 class TetrisModule extends RouteModule {
   publicRoutes() {
+
+    this.router.get(
+      "/fetchLeaderboard",
+      getLeaderboardController
+    );
     // get all users on the system
     // this.router.get(
     //   "/",

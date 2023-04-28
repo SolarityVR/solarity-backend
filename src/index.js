@@ -33,6 +33,7 @@ import { socketService } from "./services/socket";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import CronManager from "./cronManager";
 import { getTwitterApi } from "./helpers";
+import { tetrisModule } from "./modules/Tetris";
 
 class Server {
   constructor({ port }) {
@@ -46,7 +47,7 @@ class Server {
         credentials: true,
       },
     });
-    
+
     this.start();
     return this.server;
   }
@@ -134,6 +135,7 @@ class Server {
     this.express.use("/api/nfts", nftModule);
     this.express.use("/api/tweets", tweetModule);
     this.express.use("/api/users", userModule);
+    this.express.use("/api/tetrises", tetrisModule);
     this.express.use("/api/chats", chatModule);
     this.express.use("/api/collections", collectionModule);
     this.express.use("/api/events", eventModule);
