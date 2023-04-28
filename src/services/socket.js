@@ -451,6 +451,7 @@ export const socketService = (io) => {
 
     socket.on(ACTIONS.GET_LEADERBOARD, async ({}) => {
       try {
+        const now = new Date();
         const currentHour = now.getHours();
         let lowerBound = new Date(now);
         let upperBound = new Date(now);
