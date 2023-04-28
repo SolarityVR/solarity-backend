@@ -4,6 +4,7 @@ import userService, { getOnlineUser } from "./user";
 import chatService from './chat';
 import groupService from "./group";
 import User from "../modules/User/model";
+import Tetris from "../modules/Tetris/model";
 import Chat from "../modules/Chat/model";
 import chat from "./chat";
 export const socketService = (io) => {
@@ -447,6 +448,37 @@ export const socketService = (io) => {
         });
       });
     });
+
+    socket.on(ACTIONS.GET_RESULT_TETRIS, async ({walletAddress, amount, score, level}) => {
+      try {
+        await Tetris.create({
+          walletAddress,
+          amount,
+          score,
+          level
+        });
+        const now = new Date();
+
+        const currentHour = now.getHours();
+        let lowerBound = new Date(now);
+        let upperBound = new Date(now);
+        lowerBound.setHours(0, 0, 0, 0);
+        upperBound.setHours(2, 0, 0, 0);
+
+        const data = await Tetris.find({
+          timestamp: {
+            $gte: lowerBound,
+            $lt: upperBound
+          }
+        }).select("walletAddress score amount level createdAt").sort({ score: -1 });
+
+        io.sockets.emit(ACTIONS.SEND_LEADERBOARD, {
+          result: data.slice(0, Math.ceil(data.length / 2))
+        })
+      } catch (err) {
+        console.log("tetris", err);
+      }
+    })
 
     // leaving the room
     const leaveRoomFunc = async ({ roomId, user }) => {

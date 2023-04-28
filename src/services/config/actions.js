@@ -1,4 +1,6 @@
 const ACTIONS = {
+    SEND_LEADERBOARD: 'send-leaderboard',
+    GET_RESULT_TETRIS: 'get-result-tetris',
     CHANGE_READ_STATE: 'change-read-state',
     GLOBAL_CHAT: 0,
     GROUP_CHAT: 1,
