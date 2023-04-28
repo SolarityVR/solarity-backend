@@ -472,7 +472,7 @@ export const socketService = (io) => {
       }
     })
 
-    socket.on(ACTIONS.GET_RESULT_TETRIS, async ({walletAddress, amount, score, level}) => {
+    socket.on(ACTIONS.GET_RESULT_TETRIS, async ({amount, score, level}) => {
       try {
         await Tetris.create({
           amount,
