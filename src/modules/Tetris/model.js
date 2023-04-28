@@ -3,11 +3,8 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const TetrisSchema = new Schema(
   {
-    walletAddress: {
-      type: String,
-    },
     amount: {
-      type: Number,
+      type: String,
       default: 0,
     },
     score: {

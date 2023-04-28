@@ -1,4 +1,5 @@
 const ACTIONS = {
+    GET_LEADERBOARD: 'get-leaderboard',
     SEND_LEADERBOARD: 'send-leaderboard',
     GET_RESULT_TETRIS: 'get-result-tetris',
     CHANGE_READ_STATE: 'change-read-state',

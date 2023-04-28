@@ -449,10 +449,32 @@ export const socketService = (io) => {
       });
     });
 
+    socket.on(ACTIONS.GET_LEADERBOARD, async ({}) => {
+      try {
+        const currentHour = now.getHours();
+        let lowerBound = new Date(now);
+        let upperBound = new Date(now);
+        lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
+        upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
+
+        const data = await Tetris.find({
+          timestamp: {
+            $gte: lowerBound,
+            $lt: upperBound
+          }
+        }).select("score amount level createdAt").sort({ score: -1 });
+
+        io.sockets.emit(ACTIONS.SEND_LEADERBOARD, {
+          result: data.slice(0, Math.ceil(data.length / 2))
+        })
+      } catch (err) {
+        console.log("tetris", err);
+      }
+    })
+
     socket.on(ACTIONS.GET_RESULT_TETRIS, async ({walletAddress, amount, score, level}) => {
       try {
         await Tetris.create({
-          walletAddress,
           amount,
           score,
           level
@@ -462,15 +484,15 @@ export const socketService = (io) => {
         const currentHour = now.getHours();
         let lowerBound = new Date(now);
         let upperBound = new Date(now);
-        lowerBound.setHours(0, 0, 0, 0);
-        upperBound.setHours(2, 0, 0, 0);
+        lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
+        upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
 
         const data = await Tetris.find({
           timestamp: {
             $gte: lowerBound,
             $lt: upperBound
           }
-        }).select("walletAddress score amount level createdAt").sort({ score: -1 });
+        }).select("score amount level createdAt").sort({ score: -1 });
 
         io.sockets.emit(ACTIONS.SEND_LEADERBOARD, {
           result: data.slice(0, Math.ceil(data.length / 2))
