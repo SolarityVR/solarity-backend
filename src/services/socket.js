@@ -456,7 +456,7 @@ export const socketService = (io) => {
         let lowerBound = new Date(now);
         let upperBound = new Date(now);
         lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
-        upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
+        upperBound.setHours(Math.floor((currentHour + 2)/2) * 2, 0, 0, 0);
 
         const data = await Tetris.find({
           createdAt: {
@@ -485,7 +485,7 @@ export const socketService = (io) => {
         let lowerBound = new Date(now);
         let upperBound = new Date(now);
         lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
-        upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
+        upperBound.setHours(Math.floor((currentHour + 2)/2) * 2, 0, 0, 0);
 
         const data = await Tetris.find({
           createdAt: {
