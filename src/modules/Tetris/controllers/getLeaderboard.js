@@ -2,10 +2,10 @@ import { errorResponse, successResponse } from "../../../utils";
 import Tetris from '../model';
 
 export const getLeaderboardController = async (req, res) => {
-  let data;
   try {
     const {
     } = req;
+    let data;
     try {
       const now = new Date();
       const currentHour = now.getHours();
@@ -20,7 +20,7 @@ export const getLeaderboardController = async (req, res) => {
           $lt: upperBound
         }
       }).select("score amount level createdAt").sort({ score: -1 });
-      console.log(lowerBound, upperBound, data);
+      console.log(lowerBound, upperBound, data, now, currentHour);
     } catch (err) {
       console.log("tetris", err);
     }
