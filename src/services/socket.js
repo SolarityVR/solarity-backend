@@ -458,12 +458,7 @@ export const socketService = (io) => {
         lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
         upperBound.setHours(Math.floor((currentHour + 2)/2) * 2, 0, 0, 0);
 
-        const data = await Tetris.find({
-          createdAt: {
-            $gte: lowerBound,
-            $lt: upperBound
-          }
-        }).select("score amount level createdAt").sort({ score: -1 });
+        const data = await Tetris.find().select("score amount level createdAt").sort({ score: -1 });
 
         io.sockets.emit(ACTIONS.SEND_LEADERBOARD, {
           result: data.slice(0, Math.ceil(data.length / 2))
@@ -487,12 +482,7 @@ export const socketService = (io) => {
         lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
         upperBound.setHours(Math.floor((currentHour + 2)/2) * 2, 0, 0, 0);
 
-        const data = await Tetris.find({
-          createdAt: {
-            $gte: lowerBound,
-            $lt: upperBound
-          }
-        }).select("score amount level createdAt").sort({ score: -1 });
+        const data = await Tetris.find().select("score amount level createdAt").sort({ score: -1 });
 
         io.sockets.emit(ACTIONS.SEND_LEADERBOARD, {
           result: data.slice(0, Math.ceil(data.length / 2))
