@@ -459,7 +459,7 @@ export const socketService = (io) => {
         upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
 
         const data = await Tetris.find({
-          createdAt: {
+          timestamp: {
             $gte: lowerBound,
             $lt: upperBound
           }
