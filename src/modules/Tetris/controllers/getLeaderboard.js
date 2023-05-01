@@ -15,11 +15,12 @@ export const getLeaderboardController = async (req, res) => {
       upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
 
       data = await Tetris.find({
-        timestamp: {
+        createdAt: {
           $gte: lowerBound,
           $lt: upperBound
         }
       }).select("score amount level createdAt").sort({ score: -1 });
+      console.log(lowerBound, upperBound, data);
     } catch (err) {
       console.log("tetris", err);
     }
