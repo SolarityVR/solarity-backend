@@ -12,7 +12,7 @@ export const getLeaderboardController = async (req, res) => {
       let lowerBound = new Date(now);
       let upperBound = new Date(now);
       lowerBound.setHours(Math.floor(currentHour/2) * 2, 0, 0, 0);
-      upperBound.setHours(Math.ceil(currentHour/2) * 2, 0, 0, 0);
+      upperBound.setHours(Math.floor((currentHour + 2)/2) * 2, 0, 0, 0);
 
       data = await Tetris.find({
         createdAt: {
